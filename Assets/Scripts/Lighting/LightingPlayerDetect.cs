@@ -7,6 +7,7 @@ public class LightingPlayerDetect : MonoBehaviour
 {
     public Light2D _light2D;
     public GameObject player;
+    public GameObject playerShadow;
     public float playerAngle;
     [Header("Thresh hold is for the angle that the player can be seen from")]
     [Header("This should be play tested to find the optimal threshhold for each light")]
@@ -14,9 +15,11 @@ public class LightingPlayerDetect : MonoBehaviour
     public Vector2 threshhold;
     private Vector2 dir;
     public RaycastHit2D _raycastHit;
+    public LayerMask layerMask;
     public float facingAngle;
     public bool inLightAngle;
     public bool closeToLight;
+    public bool shadoowInLight;
 
     private void Start()
     {
@@ -25,14 +28,13 @@ public class LightingPlayerDetect : MonoBehaviour
 
     public void Update()
     {
-        dir = player.transform.position - transform.position;
+        dir = playerShadow.transform.position - transform.position;
         playerAngle = Mathf.Atan2(dir.y, dir.x) / Mathf.PI * 180;
         facingAngle = Mathf.Atan2(transform.position.y, transform.position.x) / Mathf.PI * 180;
         if (playerAngle < 0)
         {
             playerAngle += 360;
         }
-        Debug.DrawRay(transform.position, dir, Color.green);
         if (playerAngle > threshhold.x && playerAngle < threshhold.y)
         {
             inLightAngle = true;
@@ -51,10 +53,12 @@ public class LightingPlayerDetect : MonoBehaviour
         }
         if (inLightAngle && closeToLight)
         {
-            _raycastHit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity);
-            if (_raycastHit.transform.gameObject.layer == 6)
+            Debug.DrawRay(transform.position, dir, Color.green);
+            _raycastHit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity, layerMask:~layerMask);
+            Debug.DrawLine(transform.position, _raycastHit.point, Color.red);
+            if (_raycastHit.transform.gameObject.layer == 7)
             {
-                Debug.Log("Player not in shadow");
+                Debug.Log("Shadow in light");
             }
         }
 
