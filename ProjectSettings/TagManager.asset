@@ -12,9 +12,9 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
-  - 
-  - 
+  - Floor
+  - Background
+  - Foreground
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 718280729
+    locked: 0
+  - name: CoverLight
+    uniqueID: 3460919699
     locked: 0
   - name: Default
     uniqueID: 0
