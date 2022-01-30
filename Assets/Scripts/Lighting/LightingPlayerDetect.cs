@@ -82,15 +82,15 @@ public class LightingPlayerDetect : MonoBehaviour
     {
         if (playerMovement.gameObject.transform.position.x < gameObject.transform.position.x)
         {
-            playerMovement.playerVelocity = new Vector2(2, playerMovement.playerVelocity.y);
+            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(2, playerMovement.playerVelocity.y);
             yield return new WaitForSeconds(.2f);
-            playerMovement.playerVelocity = new Vector2(-4, playerMovement.playerVelocity.y);
+            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(-4, playerMovement.playerVelocity.y);
         }
         if (playerMovement.gameObject.transform.position.x > gameObject.transform.position.x)
         {
-            playerMovement.playerVelocity = new Vector2(-2, playerMovement.playerVelocity.y);
+            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(-2, playerMovement.playerVelocity.y);
             yield return new WaitForSeconds(.2f);
-            playerMovement.playerVelocity = new Vector2(4, playerMovement.playerVelocity.y);
+            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(4, playerMovement.playerVelocity.y);
         }
     }
 }
