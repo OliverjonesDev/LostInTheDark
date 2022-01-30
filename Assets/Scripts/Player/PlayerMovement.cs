@@ -26,11 +26,11 @@ public class PlayerMovement : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         player = GameObject.Find("player");
         shadow = GameObject.Find("shadow");
+        curController = player;
     }
 
     private void FixedUpdate()
     {
-        curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
     }
     private void Update()
     {
@@ -38,7 +38,8 @@ public class PlayerMovement : MonoBehaviour
         {
             ControllingPlayer();
         }
-
+        Jump();
+        curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
     }
     void ControllingPlayer()
     {
@@ -68,21 +69,21 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         #endregion
+    }
 
+    void Jump()
+    {
         #region player jumping
-        if (Input.GetButton("Jump"))
+        if (Input.GetAxis("Jump") != 0)
         {
             Debug.Log("jump");
-            if (playerController.controllingPlayer && player.GetComponent<Rigidbody2D>().velocity.y == 0)
+            if (curController.GetComponent<Rigidbody2D>().velocity.y == 0)
             {
-                player.GetComponent<Rigidbody2D>().velocity = jumpHeight * Vector2.up;
-            }
-            else if (playerController.controllingShadow && shadow.GetComponent<Rigidbody2D>().velocity.y == 0)
-            {
-                shadow.GetComponent<Rigidbody2D>().velocity = jumpHeight * Vector2.up;
+                playerVelocity= new Vector2(playerVelocity.x ,jumpHeight);
             }
 
         }
         #endregion
     }
 }
+
