@@ -6,6 +6,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class LightingPlayerDetect : MonoBehaviour
 {
     public Light2D _light2D;
+    public PlayerMovement playerMovement;
+    public PlayerController playerController;
     public GameObject player;
     public GameObject playerShadow;
     public float playerAngle;
@@ -24,6 +26,8 @@ public class LightingPlayerDetect : MonoBehaviour
     private void Start()
     {
         _light2D = GetComponent<Light2D>();
+        playerController = GameObject.Find("parentOfPlayers").GetComponent<PlayerController>();
+        playerMovement = GameObject.Find("parentOfPlayers").GetComponent<PlayerMovement>();
     }
 
     public void Update()
@@ -56,11 +60,37 @@ public class LightingPlayerDetect : MonoBehaviour
             Debug.DrawRay(transform.position, dir, Color.green);
             _raycastHit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity, layerMask:~layerMask);
             Debug.DrawLine(transform.position, _raycastHit.point, Color.red);
-            if (_raycastHit.transform.gameObject.layer == 7)
+            if (_raycastHit.transform.gameObject.layer == 10)
             {
                 Debug.Log("Shadow in light");
+                playerMovement.isInLight = true;
+                StartCoroutine(MovebackFromLight());
+            }
+            else
+            {
+                playerMovement.isInLight = false;
             }
         }
+        else
+        {
+            playerMovement.isInLight = false;
+        }
 
+    }
+
+    IEnumerator MovebackFromLight()
+    {
+        if (playerMovement.gameObject.transform.position.x < gameObject.transform.position.x)
+        {
+            playerMovement.playerVelocity = new Vector2(2, playerMovement.playerVelocity.y);
+            yield return new WaitForSeconds(.2f);
+            playerMovement.playerVelocity = new Vector2(-4, playerMovement.playerVelocity.y);
+        }
+        if (playerMovement.gameObject.transform.position.x > gameObject.transform.position.x)
+        {
+            playerMovement.playerVelocity = new Vector2(-2, playerMovement.playerVelocity.y);
+            yield return new WaitForSeconds(.2f);
+            playerMovement.playerVelocity = new Vector2(4, playerMovement.playerVelocity.y);
+        }
     }
 }
