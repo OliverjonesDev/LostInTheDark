@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GetComponent<PlayerMovement>().isInLight && !GetComponent<PlayerPullBlock>().blockPulling)
+        if (!GetComponent<PlayerMovement>().isInLight)
         {
             if (Input.GetButtonDown("Shadow Switch"))
             {

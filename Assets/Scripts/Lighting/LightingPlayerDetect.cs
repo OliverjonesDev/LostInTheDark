@@ -80,16 +80,14 @@ public class LightingPlayerDetect : MonoBehaviour
 
     IEnumerator MovebackFromLight()
     {
-        if (playerMovement.gameObject.transform.position.x < gameObject.transform.position.x)
+        if (playerMovement.shadow.gameObject.transform.position.x < gameObject.transform.position.x)
         {
-            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(2, playerMovement.playerVelocity.y);
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.05f);
             playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(-4, playerMovement.playerVelocity.y);
         }
-        if (playerMovement.gameObject.transform.position.x > gameObject.transform.position.x)
+        if (playerMovement.shadow.gameObject.transform.position.x > gameObject.transform.position.x)
         {
-            playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(-2, playerMovement.playerVelocity.y);
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.05f);
             playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(4, playerMovement.playerVelocity.y);
         }
     }
