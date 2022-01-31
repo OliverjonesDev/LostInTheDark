@@ -38,7 +38,14 @@ public class PlayerMovement : MonoBehaviour
         {
             ControllingPlayer();
         }
-        Jump();
+        if (!GetComponent<PlayerPullBlock>().blockPulling)
+        {
+            Jump();
+        }
+        else
+        {
+            playerVelocity /= 2;
+        }
         curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
     }
     void ControllingPlayer()
@@ -70,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
         }
         #endregion
     }
-
     void Jump()
     {
         #region player jumping

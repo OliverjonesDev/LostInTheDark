@@ -10,7 +10,7 @@ public class PlayerPullBlock : MonoBehaviour
     public RaycastHit2D _raycastHit2D;
 
     public bool blockDetected = false;
-
+    public bool blockPulling;
     private void Update()
     {
         DetectBlock();
@@ -29,5 +29,17 @@ public class PlayerPullBlock : MonoBehaviour
         {
             blockDetected = false;
         }
+        if (blockDetected && Input.GetButtonDown("Fire1"))
+        {
+            _raycastHit2D.transform.parent.transform = gameObject.GetComponent<PlayerMovement>().curController.transform;
+            blockPulling = true;
+            Debug.Log("Pulling");
+        }
+        else if (Input.GetButtonDown("Fire1") && blockPulling)
+        {
+            gameObject.GetComponent<PlayerMovement>().curController.transform.DetachChildren();
+            blockPulling = false;
+        }
+
     }
 }
