@@ -12,15 +12,13 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Player Variables")]
     public Vector2 playerVelocity;
-    public float breakForce = 8;
-    public float movementSpeed;
-    public float jumpHeight = 6;
-    public float fallRate = 3;
-    public float quickJumpRate = 3;
+    private float movementSpeed = 8;
+    private float jumpHeight = 6;
     public float lastDirInput;
 
     [Header("States - Shadow")]
     public bool isInLight;
+
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
