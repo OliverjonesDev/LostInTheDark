@@ -28,6 +28,8 @@ public class LightingPlayerDetect : MonoBehaviour
         _light2D = GetComponent<Light2D>();
         playerController = GameObject.Find("parentOfPlayers").GetComponent<PlayerController>();
         playerMovement = GameObject.Find("parentOfPlayers").GetComponent<PlayerMovement>();
+        player = GameObject.Find("player");
+        playerShadow = GameObject.Find("shadow");
     }
 
     public void Update()
@@ -82,12 +84,12 @@ public class LightingPlayerDetect : MonoBehaviour
     {
         if (playerMovement.shadow.gameObject.transform.position.x < gameObject.transform.position.x)
         {
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitForSeconds(.1f);
             playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(-4, playerMovement.playerVelocity.y);
         }
         if (playerMovement.shadow.gameObject.transform.position.x > gameObject.transform.position.x)
         {
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitForSeconds(.1f);
             playerMovement.shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(4, playerMovement.playerVelocity.y);
         }
     }
