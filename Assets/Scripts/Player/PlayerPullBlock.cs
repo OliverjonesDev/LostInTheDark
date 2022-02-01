@@ -40,6 +40,11 @@ public class PlayerPullBlock : MonoBehaviour
             _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
             blockPulling = true;
         }
+        if (blockDetected && Input.GetButton("Fire1") && !blockPulling)
+        {
+            _raycastHit2D.collider.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
+            blockPulling = true;
+        }
         else if (Input.GetButton("Fire2") && blockPulling)
         {
             _raycastHit2D.collider.transform.parent = null;
