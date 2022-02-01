@@ -19,7 +19,6 @@ public class ParralaxLayers : MonoBehaviour
     {
         float curPos = (camera.transform.position.x * (1 - parralaxSpeed));
         float dist = camera.transform.position.x * parralaxSpeed;
-        // 
         transform.position = new Vector2(startPos + dist,transform.position.y);
         //If the cur pos greater than the width of the object, reset the objects position to that edge on the right side pos x
         if (curPos > startPos + length)
