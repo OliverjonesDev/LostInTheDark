@@ -7,14 +7,15 @@ public class PlayerController : MonoBehaviour
     public bool controllingPlayer = true;
     public bool controllingShadow = false;
 
+    public bool isPlayerTorchActive;
+    public GameObject playerTorch;
 
-    // Start is called before the first frame update
     void Start()
     {
         controllingPlayer = true;
+        playerTorch = GameObject.Find("TorchLight");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!GetComponent<PlayerMovement>().isInLight)
@@ -33,6 +34,27 @@ public class PlayerController : MonoBehaviour
                     controllingShadow = false;
                 }
             }
+        }
+        if (controllingPlayer == true)
+        {
+            isPlayerTorchActive = playerTorch.activeInHierarchy;
+            if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0)
+            {
+                if (!isPlayerTorchActive)
+                {
+                    playerTorch.SetActive(true);
+                    playerTorch.transform.parent.GetComponent<torchController>().torchOn = true;
+                }
+            }
+            else
+            {
+                playerTorch.SetActive(false);
+                playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
+            }
+        }else
+        {
+            playerTorch.SetActive(false);
+            playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
         }
     }
 

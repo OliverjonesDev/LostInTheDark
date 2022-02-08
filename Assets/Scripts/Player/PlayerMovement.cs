@@ -13,38 +13,36 @@ public class PlayerMovement : MonoBehaviour
     [Header("Player Variables")]
     public Vector2 playerVelocity;
     private float movementSpeed = 8;
-    private float jumpHeight = 6;
+    public float jumpHeight = 6;
     public float lastDirInput;
+    public float jumpCheckLength = 0.65f;
+    public LayerMask jumpMask;
+    [HideInInspector]
+    public Rigidbody2D shadowRB2D, playerRB2D;
 
     [Header("States - Shadow")]
     public bool isInLight;
 
+    [Header("States - Player")]
+    public bool playerInShadow;
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
         player = GameObject.Find("player");
         shadow = GameObject.Find("shadow");
+        shadowRB2D = shadow.GetComponent<Rigidbody2D>();
+        playerRB2D = player.GetComponent<Rigidbody2D>();
         curController = player;
     }
 
-    private void FixedUpdate()
-    {
-    }
     private void Update()
     {
-        if (!isInLight)
+        if (!isInLight && !playerInShadow)
         {
             ControllingPlayer();
-        }
-        if (!GetComponent<PlayerPullBlock>().blockPulling)
-        {
             Jump();
+            curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
         }
-        else
-        {
-            playerVelocity /= 2;
-        }
-        curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
     }
     void ControllingPlayer()
     {
@@ -58,19 +56,19 @@ public class PlayerMovement : MonoBehaviour
         if (playerController.controllingPlayer)
         {
             curController = player;
-            playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, player.GetComponent<Rigidbody2D>().velocity.y);
-            if (shadow.GetComponent<Rigidbody2D>().velocity != Vector2.zero)
+            playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, playerRB2D.velocity.y);
+            if (shadowRB2D.velocity != Vector2.zero)
             {
-                shadow.GetComponent<Rigidbody2D>().velocity = new Vector2(0, shadow.GetComponent<Rigidbody2D>().velocity.y);
+                shadowRB2D.velocity = new Vector2(0, shadow.GetComponent<Rigidbody2D>().velocity.y);
             }
         }
         else
         {
             curController = shadow;
-            playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, shadow.GetComponent<Rigidbody2D>().velocity.y);
-            if (player.GetComponent<Rigidbody2D>().velocity != Vector2.zero)
+            playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, shadowRB2D.velocity.y);
+            if (playerRB2D.velocity != Vector2.zero)
             {
-                player.GetComponent<Rigidbody2D>().velocity = new Vector2(0, player.GetComponent<Rigidbody2D>().velocity.y);
+                playerRB2D.velocity = new Vector2(0, playerRB2D.velocity.y);
             }
         }
         #endregion
@@ -78,12 +76,15 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         #region player jumping
-        if (Input.GetAxis("Jump") != 0)
+        RaycastHit2D jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpCheckLength, layerMask: jumpMask);
+        Debug.Log(jumpCheck1.collider);
+        Debug.DrawRay(curController.transform.position, Vector2.down * jumpCheckLength);
+        if (Input.GetButtonDown("Jump"))
         {
-            Debug.Log("jump");
-            if (curController.GetComponent<Rigidbody2D>().velocity.y == 0)
+            if (jumpCheck1.collider != null)
             {
                 playerVelocity= new Vector2(playerVelocity.x ,jumpHeight);
+                Debug.Log("jump");
             }
 
         }
