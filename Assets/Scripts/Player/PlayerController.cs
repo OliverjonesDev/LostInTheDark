@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
         if (controllingPlayer == true)
         {
             isPlayerTorchActive = playerTorch.activeInHierarchy;
-            if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0)
+            if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0 && !playerTorch.transform.parent.GetComponent<torchController>().torchLastEmpty)
             {
                 if (!isPlayerTorchActive)
                 {
