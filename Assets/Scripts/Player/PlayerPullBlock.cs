@@ -8,16 +8,15 @@ public class PlayerPullBlock : MonoBehaviour
     public LayerMask blockMask;
     public float maxDistanceToPull;
     public RaycastHit2D _raycastHit2D;
+    public bool interact;
 
     public bool blockDetected = false;
     public bool blockPulling;
-    private GameObject blockBeingPulled;
-    private void FixedUpdate()
+    public GameObject blockBeingPulled;
+
+    private void Update()
     {
-        if (gameObject.GetComponent<PlayerMovement>().curController.GetComponent<Rigidbody2D>().velocity.y == 0)
-        {
-            DetectBlock();
-        }
+        DetectBlock();
     }
 
     void DetectBlock()
@@ -25,59 +24,45 @@ public class PlayerPullBlock : MonoBehaviour
         Debug.DrawRay(GetComponent<PlayerMovement>().curController.transform.position, maxDistanceToPull * (Vector2.right * GetComponent<PlayerMovement>().lastDirInput), Color.green);
         //Raycast starts
         _raycastHit2D = Physics2D.Raycast(GetComponent<PlayerMovement>().curController.transform.position,
-            maxDistanceToPull * (Vector2.right * GetComponent<PlayerMovement>().lastDirInput), maxDistanceToPull, blockMask);
-        //End
-        /*
+        maxDistanceToPull * (Vector2.right * GetComponent<PlayerMovement>().lastDirInput), maxDistanceToPull, blockMask);
         if (_raycastHit2D.point != Vector2.zero)
         {
             blockDetected = true;
-            _raycastHit2D.collider.GetComponent<Rigidbody2D>().simulated = true;
-            blockBeingPulled = _raycastHit2D.collider.gameObject;
         }
         else
         {
-<<<<<<< Updated upstream
             blockDetected = false;
         }
-        if (blockDetected && Input.GetButton("Fire1") && !blockPulling)
+        if (Input.GetButton("Fire2"))
         {
-            _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
-            blockPulling = true;
+            interact = true;
         }
-        if (blockDetected && Input.GetButton("Fire1") && !blockPulling)
+        else
         {
-            _raycastHit2D.collider.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
-            blockPulling = true;
+            interact = false;
         }
-        else if (Input.GetButton("Fire2") && blockPulling)
+        if (interact)
         {
-            _raycastHit2D.collider.transform.parent = null;
-            blockPulling = false;
-=======
-            blockBeingPulled.GetComponent<Rigidbody2D>().simulated = false;
-            blockBeingPulled = null;
->>>>>>> Stashed changes
-        }
-        */
-
-    }
-}
-
-/*
- *         if (interact)
-        {
-            if (!blockPulling)
+            if (blockDetected)
             {
-                _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
-                blockPulling = true;
-                blockBeingPulled = _raycastHit2D.collider.transform.gameObject;
-                Debug.Log(blockBeingPulled.name + " being pulled");
+                if (!blockPulling)
+                {
+                    _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
+                    blockPulling = true;
+                    blockBeingPulled = _raycastHit2D.collider.transform.gameObject;
+                    Debug.Log(blockBeingPulled.name + " being pulled");
+                }
             }
-            else
+        }
+        else
+        {
+            if (blockPulling)
             {
                 blockBeingPulled.transform.parent = null;
                 blockPulling = false;
                 Debug.Log(blockBeingPulled.name + " stopped being pulled");
             }
         }
-*/
+    }
+}
+

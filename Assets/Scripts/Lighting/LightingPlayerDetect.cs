@@ -49,7 +49,7 @@ public class LightingPlayerDetect : MonoBehaviour
         {
             inLightAngle = false;
         }
-        if (Vector3.Distance(transform.position, player.transform.position) < _light2D.pointLightOuterRadius)
+        if (Vector3.Distance(transform.position, playerShadow.transform.position) < _light2D.pointLightOuterRadius)
         {
             closeToLight = true;
         }
@@ -62,15 +62,18 @@ public class LightingPlayerDetect : MonoBehaviour
             Debug.DrawRay(transform.position, dir, Color.green);
             _raycastHit = Physics2D.Raycast(transform.position, dir, Mathf.Infinity, layerMask:~layerMask);
             Debug.DrawLine(transform.position, _raycastHit.point, Color.red);
-            if (_raycastHit.transform.gameObject.layer == 10)
+            if (_raycastHit.transform != null)
             {
-                Debug.Log("Shadow in light");
-                playerMovement.isInLight = true;
-                StartCoroutine(MovebackFromLight());
-            }
-            else
-            {
-                playerMovement.isInLight = false;
+                if (_raycastHit.transform.gameObject.layer == 10)
+                {
+                    Debug.Log("Shadow in light");
+                    playerMovement.isInLight = true;
+                    StartCoroutine(MovebackFromLight());
+                }
+                else
+                {
+                    playerMovement.isInLight = false;
+                }
             }
         }
         else

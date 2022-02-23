@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     public bool controllingPlayer = true;
     public bool controllingShadow = false;
-
     public bool isPlayerTorchActive;
     public GameObject playerTorch;
 
@@ -18,7 +17,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!GetComponent<PlayerMovement>().isInLight)
+
+        if (!GetComponent<PlayerMovement>().isInLight && GetComponent<PlayerMovement>().jumpCheck1.collider != null && GetComponent<PlayerPullBlock>().blockPulling == false)
         {
             if (Input.GetButtonDown("Shadow Switch"))
             {
@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
                 {
                     controllingPlayer = true;
                     controllingShadow = false;
+
                 }
             }
         }

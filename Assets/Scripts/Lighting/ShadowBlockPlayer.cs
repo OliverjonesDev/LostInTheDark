@@ -8,10 +8,12 @@ public class ShadowBlockPlayer : MonoBehaviour
     public GameObject player;
     [Header("What light to brighten the shadow")]
     public GameObject isShadowLitUp;
+    private PlayerMovement playerMovement;
 
     private void Start()
     {
         player = GameObject.Find("player");
+        playerMovement = GameObject.Find("parentOfPlayers").GetComponent<PlayerMovement>();
     }
     //We can use triggers for shadows since they are not dynamic light the lighting.
     private void OnTriggerEnter2D(Collider2D collision)
@@ -55,9 +57,13 @@ public class ShadowBlockPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (player.gameObject.transform.parent.GetComponent<PlayerMovement>().playerInShadow == true)
+        if (playerMovement.playerInShadow == true)
         {
             StartCoroutine(MovePlayerBackFromShadow());
+        }
+        else
+        {
+            return;
         }
     }
 
