@@ -50,3 +50,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LevelSelection
+    uniqueID: 2616042847
+    locked: 0
