@@ -38,24 +38,23 @@ public class PlayerController : MonoBehaviour
         }
         if (controllingPlayer == true)
         {
-            isPlayerTorchActive = playerTorch.activeInHierarchy;
-            if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0 && !playerTorch.transform.parent.GetComponent<torchController>().torchLastEmpty)
+            if (playerTorch != null)
             {
-                if (!isPlayerTorchActive)
+                isPlayerTorchActive = playerTorch.activeInHierarchy;
+                if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0 && !playerTorch.transform.parent.GetComponent<torchController>().torchLastEmpty)
                 {
-                    playerTorch.SetActive(true);
-                    playerTorch.transform.parent.GetComponent<torchController>().torchOn = true;
+                    if (!isPlayerTorchActive)
+                    {
+                        playerTorch.SetActive(true);
+                        playerTorch.transform.parent.GetComponent<torchController>().torchOn = true;
+                    }
+                }
+                else
+                {
+                    playerTorch.SetActive(false);
+                    playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
                 }
             }
-            else
-            {
-                playerTorch.SetActive(false);
-                playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
-            }
-        }else
-        {
-            playerTorch.SetActive(false);
-            playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
         }
     }
 

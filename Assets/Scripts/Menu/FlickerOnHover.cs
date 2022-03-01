@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using TMPro;
 using UnityEngine.EventSystems;
 
 public class FlickerOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

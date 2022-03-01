@@ -5,20 +5,29 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerController playerController;
+    private float playerOrgColBoundsY, shadowOrgColBoundsY;
+
     [Header("This script should be on the parent object of the player and the shadow")]
     public GameObject player;
     public GameObject shadow;
     public GameObject curController;
     [Header("Player Variables")]
     public Vector2 playerVelocity;
+    private float movementSpeedOrg = 8;
     private float movementSpeed = 8;
+    private float movementSpeedCrouched = 4;
+    private float movementSpeedPulling = 4;
     public float jumpHeight = 6;
     public float lastDirInput;
-    public float jumpCheckLength = 0.65f;
+    public float jumpPlayerCheckLength = 1.35f;
+    public float jumpShadowCheckLength = 2f;
     public LayerMask jumpMask;
+    public bool crouching;
     [HideInInspector]
     public Rigidbody2D shadowRB2D, playerRB2D;
     public RaycastHit2D jumpCheck1;
+
+    public bool walking;
 
     [Header("States - Shadow")]
     public bool isInLight;
@@ -33,6 +42,8 @@ public class PlayerMovement : MonoBehaviour
         shadowRB2D = shadow.GetComponent<Rigidbody2D>();
         playerRB2D = player.GetComponent<Rigidbody2D>();
         curController = player;
+        playerOrgColBoundsY = player.GetComponent<BoxCollider2D>().size.y;
+        shadowOrgColBoundsY = shadow.GetComponent<BoxCollider2D>().size.y;
     }
 
     private void Update()
@@ -41,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         {
             ControllingPlayer();
             Jump();
+            Crouching();
             curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
         }
     }
@@ -54,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 curController.transform.localScale = new Vector3(-Mathf.Abs(curController.transform.localScale.x), curController.transform.localScale.y, curController.transform.localScale.z);
             }
+            walking = true;
         }
         else if(Input.GetAxisRaw("Horizontal") > 0)
         {
@@ -62,16 +75,31 @@ public class PlayerMovement : MonoBehaviour
             {
                 curController.transform.localScale = new Vector3(Mathf.Abs(curController.transform.localScale.x), curController.transform.localScale.y, curController.transform.localScale.z);
             }
+            walking = true;
 
-
-        }
-        if (GetComponent<PlayerPullBlock>().blockPulling)
-        {
-            movementSpeed = 4;
         }
         else
         {
-            movementSpeed = 8;
+            walking = false;
+        }
+        if (Input.GetButtonDown("Crouch"))
+        {
+            if (crouching)
+            {
+                crouching = false;
+            }
+            else
+            {
+                crouching = true;
+            }
+        }
+        if (GetComponent<PlayerPullBlock>().blockPulling || crouching)
+        {
+            movementSpeed = movementSpeedPulling;
+        }
+        else
+        {
+            movementSpeed = movementSpeedOrg;
         }
         Debug.Log(curController.transform.localScale.x);
         //Use get axis for ease in and ease out, if you use GetAxisRaw it is just the int flat value so 0,1,-1
@@ -102,10 +130,18 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         #region player jumping
-        jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpCheckLength, layerMask: jumpMask);
+        if (curController == player)
+        {
+            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength, layerMask: jumpMask);
+            Debug.DrawRay(curController.transform.position, Vector2.down * jumpPlayerCheckLength);
+        }
+        else
+        {
+            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpShadowCheckLength, layerMask: jumpMask);
+            Debug.DrawRay(curController.transform.position, Vector2.down * jumpShadowCheckLength);
+        }
         Debug.Log(jumpCheck1.collider);
-        Debug.DrawRay(curController.transform.position, Vector2.down * jumpCheckLength);
-        if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling)
+        if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling && !crouching)
         {
             if (jumpCheck1.collider != null)
             {
@@ -129,6 +165,36 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    void Crouching()
+    {
+        if (crouching)
+        {
+            if (curController == shadow)
+            {
+                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.46f) ;
+                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY / 2);
+            }
+            else if (curController == player)
+            {
+                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.46f);
+                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, playerOrgColBoundsY / 2);
+            }
+        }
+        else
+        {
+            if (curController == shadow)
+            {
+                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.19f);
+                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY);
+            }
+            else if (curController == player)
+            {
+                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.01f);
+                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, playerOrgColBoundsY);
+            }
+        }
     }
 }
 

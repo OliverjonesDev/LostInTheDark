@@ -39,7 +39,10 @@ public class Interactable : MonoBehaviour
         transformOrg = transform.position;
         interactionLight = GetComponent<Light2D>();
         playerInteractionsScript = parentOfPlayer.transform.GetComponent<PlayerInteractions>();
-        moveable = true;
+        if (typeOfInteractable == InteractableType.typeFix)
+        {
+            moveable = true;
+        }
         if (interactionLight != null)
         {
             interactionLight.enabled = false;
@@ -77,10 +80,12 @@ public class Interactable : MonoBehaviour
                 }
             }
         }
-
-        if (moveable)
+        if (typeOfInteractable ==InteractableType.typeFix)
         {
-            moveable = false;
+            if (moveable)
+            {
+                moveable = false;
+            }
         }
 
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class ShadowBlockPlayer : MonoBehaviour
 {
@@ -48,11 +49,19 @@ public class ShadowBlockPlayer : MonoBehaviour
                 collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
             }
         }
+        if (collision.gameObject.layer == 10)
+        {
+            GetComponent<Light2D>().intensity = .3f;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         StartCoroutine(Delay());
+        if (collision.gameObject.layer == 10)
+        {
+            GetComponent<Light2D>().intensity = 0f;
+        }
     }
 
     private void Update()
