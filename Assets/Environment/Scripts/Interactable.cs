@@ -31,10 +31,9 @@ public class Interactable : MonoBehaviour
     public List<GameObject> requiredItemsToFix;
     public GameObject affectedPartner;
     private float input;
-
-
     private void Start()
     {
+
         parentOfPlayer = GameObject.Find("parentOfPlayers");
         transformOrg = transform.position;
         interactionLight = GetComponent<Light2D>();

@@ -111,7 +111,7 @@ MonoBehaviour:
   - {x: -0.5, y: 0.5, z: 0}
   m_ShapePathHash: 0
   m_Mesh: {fileID: 0}
-  m_InstanceId: 20034
+  m_InstanceId: -64138
 --- !u!61 &3196310384538687932
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -153,11 +153,11 @@ MonoBehaviour:
   parentOfPlayer: {fileID: 0}
   collectable: 0
   interactable: 0
-  moveable: 0
+  moveable: 1
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 1088
-  typeOfInteractable: 0
+  typeOfInteractable: 1
   moving: 1
   animationSpeed: 1
   amplitude: 3.53
@@ -177,7 +177,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.67686707, y: 0}
+  m_Offset: {x: -0.84532475, y: -0.0011362135}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -188,5 +188,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.353734, y: 1}
+  m_Size: {x: 2.0168185, y: 0.9704636}
   m_EdgeRadius: 0

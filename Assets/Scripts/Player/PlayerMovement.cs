@@ -27,14 +27,13 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D shadowRB2D, playerRB2D;
     public RaycastHit2D jumpCheck1;
     public RaycastHit2D crouchCheck;
-
     public bool walking;
 
     [Header("States - Shadow")]
     public bool isInLight;
-
     [Header("States - Player")]
     public bool playerInShadow;
+
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -57,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
             curController.GetComponent<Rigidbody2D>().velocity = playerVelocity;
         }
     }
+
     void ControllingPlayer()
     {
         #region playerInput and player movement directional
@@ -104,7 +104,6 @@ public class PlayerMovement : MonoBehaviour
         {
             movementSpeed = movementSpeedOrg;
         }
-        Debug.Log(curController.transform.localScale.x);
         //Use get axis for ease in and ease out, if you use GetAxisRaw it is just the int flat value so 0,1,-1
         if (playerController.controllingPlayer)
         {
@@ -191,21 +190,12 @@ public class PlayerMovement : MonoBehaviour
         }
         #endregion
     }
-
     void Crouching()
     {
         if (crouching)
         {
-            if (curController == shadow)
-            {
-                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.46f) ;
-                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY / 2);
-            }
-            else if (curController == player)
-            {
-                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.46f);
-                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, playerOrgColBoundsY / 2);
-            }
+            curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.46f);
+            curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY / 2);
         }
         else
         {
