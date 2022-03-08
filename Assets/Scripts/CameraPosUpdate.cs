@@ -11,6 +11,9 @@ public class CameraPosUpdate : MonoBehaviour
     {
         shadow = GameObject.Find("shadow");
         player = GameObject.Find("player");
+
+
+
     }
 
     private void Update()

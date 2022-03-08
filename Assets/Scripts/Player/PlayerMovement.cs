@@ -15,7 +15,6 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 playerVelocity;
     private float movementSpeedOrg = 8;
     private float movementSpeed = 8;
-    private float movementSpeedCrouched = 4;
     private float movementSpeedPulling = 4;
     public float jumpHeight = 6;
     public float lastDirInput;
@@ -23,9 +22,11 @@ public class PlayerMovement : MonoBehaviour
     public float jumpShadowCheckLength = 2f;
     public LayerMask jumpMask;
     public bool crouching;
+    public bool isGrounded;
     [HideInInspector]
     public Rigidbody2D shadowRB2D, playerRB2D;
     public RaycastHit2D jumpCheck1;
+    public RaycastHit2D crouchCheck;
 
     public bool walking;
 
@@ -59,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
     void ControllingPlayer()
     {
         #region playerInput and player movement directional
+
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
             lastDirInput = -1;
@@ -82,7 +84,8 @@ public class PlayerMovement : MonoBehaviour
         {
             walking = false;
         }
-        if (Input.GetButtonDown("Crouch"))
+
+        if (Input.GetButtonDown("Crouch") && crouchCheck.collider == null && isGrounded)
         {
             if (crouching)
             {
@@ -106,7 +109,22 @@ public class PlayerMovement : MonoBehaviour
         if (playerController.controllingPlayer)
         {
             curController = player;
-            playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, playerRB2D.velocity.y);
+            if (isGrounded)
+            {
+                playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, playerRB2D.velocity.y);
+            }
+            else if (!isGrounded && lastDirInput != Input.GetAxisRaw("Horizontal"))
+            {
+                playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed / 2, playerRB2D.velocity.y);
+            }
+
+            else if (!isGrounded)
+            {
+                playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, playerRB2D.velocity.y);
+            }
+
+
+
             if (shadowRB2D.velocity != Vector2.zero)
             {
                 shadowRB2D.velocity = new Vector2(0, shadow.GetComponent<Rigidbody2D>().velocity.y);
@@ -119,7 +137,7 @@ public class PlayerMovement : MonoBehaviour
             curController = shadow;
             playerVelocity = new Vector2(Input.GetAxisRaw("Horizontal") * movementSpeed, shadowRB2D.velocity.y);
             if (playerRB2D.velocity != Vector2.zero)
-            {
+            { 
                 playerRB2D.velocity = new Vector2(0, playerRB2D.velocity.y);
             }
             shadowRB2D.simulated = true;
@@ -132,27 +150,34 @@ public class PlayerMovement : MonoBehaviour
         #region player jumping
         if (curController == player)
         {
-            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength, layerMask: jumpMask);
+            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength);
             Debug.DrawRay(curController.transform.position, Vector2.down * jumpPlayerCheckLength);
+            crouchCheck = Physics2D.Raycast(curController.transform.position, Vector2.up, jumpPlayerCheckLength);
+            Debug.DrawRay(curController.transform.position, Vector2.up * jumpPlayerCheckLength, Color.red);
+
         }
         else
         {
-            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpShadowCheckLength, layerMask: jumpMask);
+            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpShadowCheckLength);
             Debug.DrawRay(curController.transform.position, Vector2.down * jumpShadowCheckLength);
+            crouchCheck = Physics2D.Raycast(curController.transform.position, Vector2.up, 1);
+            Debug.DrawRay(curController.transform.position, Vector2.up * 1, Color.red);
         }
-        Debug.Log(jumpCheck1.collider);
-        if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling && !crouching)
+        if (jumpCheck1.collider != null)
         {
-            if (jumpCheck1.collider != null)
+            isGrounded = true;
+            if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling && !crouching)
             {
-                playerVelocity= new Vector2(playerVelocity.x ,jumpHeight);
+                playerVelocity = new Vector2(playerVelocity.x, jumpHeight);
                 Debug.Log("jump");
             }
-            else
-            {
-                return;
-            }
         }
+        else
+        {
+            isGrounded = false;
+            return;
+        }
+
         if (jumpCheck1.collider != null)
         {
             if (jumpCheck1.collider.gameObject.layer == 12)

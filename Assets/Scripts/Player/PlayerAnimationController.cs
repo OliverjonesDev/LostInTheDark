@@ -7,12 +7,14 @@ public class PlayerAnimationController : MonoBehaviour
     [Header("Player Animations")]
     public GameObject player;
     public SpriteRenderer playerRenderer;
+    public Sprite playerIdleAnim;
     public Sprite playerWalkAnim;
     public Sprite playerCrouchAnim;
     public Sprite playerPushAnim;
     [Header("Shadow Animations")]
     public GameObject shadow;
     public SpriteRenderer shadowRenderer;
+    public Sprite shadowIdleAnim;
     public Sprite shadowWalkAnim;
     public Sprite shadowCrouchAnim;
 
@@ -51,6 +53,10 @@ public class PlayerAnimationController : MonoBehaviour
             {
                 playerRenderer.sprite = playerPushAnim;
             }
+            else
+            {
+                playerRenderer.sprite = playerIdleAnim;
+            }
         }
     }
     void ShadowAnimations()
@@ -64,6 +70,10 @@ public class PlayerAnimationController : MonoBehaviour
             else if (referenceToPlayerMovement.crouching)
             {
                 shadowRenderer.sprite = shadowCrouchAnim;
+            }
+            else
+            {
+                shadowRenderer.sprite = shadowIdleAnim;
             }
         }
     }

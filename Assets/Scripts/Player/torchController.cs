@@ -22,7 +22,7 @@ public class torchController : MonoBehaviour
         //encapsulation and reduce spaghetti code. there is alot right now which I need to rewrite but this is a mockup.
 
         //If the player runs out of battery, the torch is put on a cooldown timer and has to recharge to 100 percent to be able to used again
-        //this is promote good resource management from the player. This can also have an animation of the player character hitting the torch or checking
+        //this is promqote good resource management from the player. This can also have an animation of the player character hitting the torch or checking
         //the batteries in the torch to make sure its working.
 
         if (battery < 5)

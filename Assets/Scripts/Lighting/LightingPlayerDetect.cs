@@ -14,6 +14,7 @@ public class LightingPlayerDetect : MonoBehaviour
     [Header("Thresh hold is for the angle that the player can be seen from")]
     [Header("This should be play tested to find the optimal threshhold for each light")]
     [Header("X is the lower bound, Y is the Upper bound")]
+    [Header("-+10 Degrees on both sides to give player leeway")]
     public Vector2 threshhold;
     private Vector2 dir;
     public RaycastHit2D _raycastHit;
@@ -22,6 +23,7 @@ public class LightingPlayerDetect : MonoBehaviour
     public bool inLightAngle;
     public bool closeToLight;
     public bool shadoowInLight;
+    public Transform shadowLocReset;
 
     private void Start()
     {
@@ -85,15 +87,14 @@ public class LightingPlayerDetect : MonoBehaviour
 
     IEnumerator MovebackFromLight()
     {
-        if (playerMovement.shadow.gameObject.transform.position.x < gameObject.transform.position.x)
+        yield return new WaitForSeconds(.075f);
+        if (shadowLocReset == null)
         {
-            yield return new WaitForSeconds(.075f);
-            playerMovement.shadowRB2D.velocity = new Vector2(-4, playerMovement.playerVelocity.y);
+            Debug.LogError("Shadow Reset not assigned");
         }
-        if (playerMovement.shadowRB2D.gameObject.transform.position.x > gameObject.transform.position.x)
+        else
         {
-            yield return new WaitForSeconds(.075f);
-            playerMovement.shadowRB2D.velocity = new Vector2(4, playerMovement.playerVelocity.y);
+            playerMovement.shadow.transform.position = shadowLocReset.position;
         }
     }
 }

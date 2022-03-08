@@ -14,6 +14,8 @@ public class PlayerPullBlock : MonoBehaviour
     public bool blockPulling;
     public GameObject blockBeingPulled;
 
+    private float setYValue;
+
     private void Update()
     {
         DetectBlock();
@@ -41,27 +43,42 @@ public class PlayerPullBlock : MonoBehaviour
         {
             interact = false;
         }
-        if (interact)
+
+        if (GetComponent<PlayerMovement>().curController.transform.parent == transform)
         {
-            if (blockDetected)
+            if (interact)
             {
-                if (!blockPulling)
+                if (blockDetected)
                 {
-                    _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
-                    blockPulling = true;
-                    blockBeingPulled = _raycastHit2D.collider.transform.gameObject;
-                    Debug.Log(blockBeingPulled.name + " being pulled");
+                    if (!blockPulling)
+                    {
+                        setYValue = _raycastHit2D.transform.position.y;
+                        _raycastHit2D.transform.parent = gameObject.GetComponent<PlayerMovement>().curController.transform;
+                        blockPulling = true;
+                        blockBeingPulled = _raycastHit2D.collider.transform.gameObject;
+                        Debug.Log(blockBeingPulled.name + " being pulled");
+                    }
+                }
+            }
+            else
+            {
+                if (blockPulling)
+                {
+                    blockBeingPulled.transform.parent = null;
+                    blockPulling = false;
+                    Debug.Log(blockBeingPulled.name + " stopped being pulled");
+                    blockBeingPulled.transform.position = new Vector3(blockBeingPulled.transform.position.x, setYValue);
+                    blockBeingPulled = null;
                 }
             }
         }
-        else
+        else if (blockPulling)
         {
-            if (blockPulling)
-            {
-                blockBeingPulled.transform.parent = null;
-                blockPulling = false;
-                Debug.Log(blockBeingPulled.name + " stopped being pulled");
-            }
+            blockBeingPulled.transform.parent = null;
+            blockPulling = false;
+            Debug.Log(blockBeingPulled.name + " stopped being pulled");
+            blockBeingPulled.transform.position = new Vector3(blockBeingPulled.transform.position.x, setYValue);
+            blockBeingPulled = null;
         }
     }
 }

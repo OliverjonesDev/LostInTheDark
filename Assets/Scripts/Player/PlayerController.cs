@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (!GetComponent<PlayerMovement>().isInLight && GetComponent<PlayerMovement>().jumpCheck1.collider != null && GetComponent<PlayerPullBlock>().blockPulling == false)
+        if (!GetComponent<PlayerMovement>().isInLight && GetComponent<PlayerMovement>().jumpCheck1.collider != null && GetComponent<PlayerPullBlock>().blockPulling == false && !GetComponent<PlayerMovement>().crouching)
         {
             if (Input.GetButtonDown("Shadow Switch"))
             {
