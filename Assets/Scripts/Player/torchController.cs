@@ -13,8 +13,6 @@ public class torchController : MonoBehaviour
     public float battery = 100, batteryDecreaseRatePS, batteryIncreaseRatePS;
     private float timer = 0;
     public Image[] batteryIndicators;
-
-    // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;

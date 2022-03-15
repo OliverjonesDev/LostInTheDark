@@ -1,5 +1,77 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &60963420537556156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1310592881606630118}
+  - component: {fileID: 8494421056224871965}
+  m_Layer: 0
+  m_Name: TorchLight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1310592881606630118
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60963420537556156}
+  m_LocalRotation: {x: -0, y: -0, z: 0.0019055106, w: 0.9999982}
+  m_LocalPosition: {x: 0, y: 0, z: 0.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6012326918649196685}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8494421056224871965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60963420537556156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 0.8396226, g: 0.593432, b: 0.24951048, a: 1}
+  m_Intensity: 1.22
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: af59208a00000000
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 1
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 1
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 27.080002
+  m_PointLightOuterAngle: 48.91
+  m_PointLightInnerRadius: 2.54
+  m_PointLightOuterRadius: 7
+  m_PointLightDistance: 67.38
+  m_PointLightQuality: 0
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &4021299489063642697
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,7 +87,7 @@ GameObject:
   - component: {fileID: 4021299489063642738}
   - component: {fileID: 7850975550145584222}
   m_Layer: 0
-  m_Name: players-NoTorch
+  m_Name: players
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,8 +123,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controllingPlayer: 1
   controllingShadow: 0
+  playerHasTorch: 0
   isPlayerTorchActive: 0
-  playerTorch: {fileID: 0}
+  TorchBatteryUI: {fileID: 0}
+  playerTorch: {fileID: 5092534125739664329}
 --- !u!114 &4021299489063642702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,11 +145,11 @@ MonoBehaviour:
   playerVelocity: {x: 0, y: 0}
   jumpHeight: 6
   lastDirInput: 0
-  jumpPlayerCheckLength: 1.35
+  jumpPlayerCheckLength: 1.2
   jumpShadowCheckLength: 2
   jumpMask:
     serializedVersion: 2
-    m_Bits: 6273
+    m_Bits: 1088
   crouching: 0
   isGrounded: 0
   shadowRB2D: {fileID: 0}
@@ -170,7 +244,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021299489490717667}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.69, y: -8.08, z: 0}
+  m_LocalPosition: {x: 0.69, y: -9.96, z: 0}
   m_LocalScale: {x: 2.05092, y: 2.05092, z: 2.05092}
   m_Children: []
   m_Father: {fileID: 4021299489063642700}
@@ -240,7 +314,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.032296315, y: -0.116267264}
+  m_Offset: {x: 0.0322963, y: -0.14328715}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -251,7 +325,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62536275, y: 1.2325342}
+  m_Size: {x: 0.62536275, y: 1.2865744}
   m_EdgeRadius: 0
 --- !u!50 &4021299489490717664
 Rigidbody2D:
@@ -262,7 +336,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021299489490717667}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -302,9 +376,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021299489561788702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.31, y: 0.23, z: 0}
+  m_LocalPosition: {x: 0.31, y: 0.63, z: 0}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
-  m_Children: []
+  m_Children:
+  - {fileID: 6012326918649196685}
   m_Father: {fileID: 4021299489063642700}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -394,7 +469,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021299489561788702}
   m_BodyType: 0
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -414,3 +489,80 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4021299489561788702}
   m_Enabled: 1
+--- !u!1 &5092534125739664329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6012326918649196685}
+  - component: {fileID: 8580676775082647312}
+  - component: {fileID: 6090809869636352907}
+  m_Layer: 0
+  m_Name: pTorch
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6012326918649196685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092534125739664329}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.14000052, y: -0.59499997, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1310592881606630118}
+  m_Father: {fileID: 4021299489561788700}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8580676775082647312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092534125739664329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd758ab0481bba54d841d8ce29d3e73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6090809869636352907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5092534125739664329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf582d3311587714eb8a917d63e43e64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torchLight: {fileID: 8494421056224871965}
+  torchOn: 0
+  torchLastEmpty: 0
+  flickerInterval: 0.03
+  flickerTimeMin: 0.03
+  flickerTimeMax: 0.11
+  torchLightIntensityMin: 1
+  torchLightIntensityMax: 5
+  battery: 100
+  batteryDecreaseRatePS: 25
+  batteryIncreaseRatePS: 10
+  batteryIndicators:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

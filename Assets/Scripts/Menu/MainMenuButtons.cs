@@ -9,6 +9,12 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject optionsMenu;
     public GameObject levelsMenu;
     public GameObject menu;
+    public GameObject journal;
+
+    private void Awake()
+    {
+        journal = GameObject.Find("Journal");
+    }
     public void Play()
     {
         if (!levelsMenu.activeInHierarchy)
@@ -73,7 +79,12 @@ public class MainMenuButtons : MonoBehaviour
         {
             if (Input.GetButtonDown("Cancel"))
             {
-                if (!menu.activeSelf)
+                if (journal.activeSelf)
+                {
+                    journal.SetActive(false);
+                }
+
+                else if (!menu.activeSelf)
                 {
                     menu.SetActive(true);
                 }
@@ -82,6 +93,27 @@ public class MainMenuButtons : MonoBehaviour
                     menu.SetActive(false);
                 }
             }
+        }
+
+        if (journal != null)
+        {
+            if (Input.GetButtonDown("Journal"))
+            {
+                if (journal.activeSelf)
+                {
+                    journal.SetActive(false);
+                    Debug.Log("Journal Closed");
+                }
+                else
+                {
+                    journal.SetActive(true);
+                    Debug.Log("Journal Open");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("No Journal Assigned");
         }
     }
 }

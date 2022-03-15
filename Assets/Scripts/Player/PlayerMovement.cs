@@ -165,9 +165,16 @@ public class PlayerMovement : MonoBehaviour
         if (jumpCheck1.collider != null)
         {
             isGrounded = true;
-            if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling && !crouching)
+            if (Input.GetButtonDown("Jump") && !GetComponent<PlayerPullBlock>().blockPulling)
             {
-                playerVelocity = new Vector2(playerVelocity.x, jumpHeight);
+                if (crouching)
+                {
+                    playerVelocity = new Vector2(playerVelocity.x, jumpHeight / 1.25f);
+                }
+                else
+                {
+                    playerVelocity = new Vector2(playerVelocity.x, jumpHeight);
+                }
                 Debug.Log("jump");
             }
         }

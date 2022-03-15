@@ -6,7 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     public bool controllingPlayer = true;
     public bool controllingShadow = false;
+    public bool playerHasTorch = false;
     public bool isPlayerTorchActive;
+    public GameObject TorchBatteryUI;
     public GameObject playerTorch;
 
     void Start()
@@ -38,8 +40,10 @@ public class PlayerController : MonoBehaviour
         }
         if (controllingPlayer == true)
         {
+
             if (playerTorch != null)
             {
+                TorchBatteryUI.SetActive(true);
                 isPlayerTorchActive = playerTorch.activeInHierarchy;
                 if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0 && !playerTorch.transform.parent.GetComponent<torchController>().torchLastEmpty)
                 {
@@ -53,10 +57,22 @@ public class PlayerController : MonoBehaviour
                 {
                     playerTorch.SetActive(false);
                     playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
+                    TorchBatteryUI.SetActive(false);
                 }
             }
+
+        }
+        if (!playerHasTorch)
+        {
+            playerTorch.SetActive(false);
+            playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
+            TorchBatteryUI.SetActive(false);
+
+        }
+        else
+        {
+            TorchBatteryUI.SetActive(true);
         }
     }
-
 
 }
