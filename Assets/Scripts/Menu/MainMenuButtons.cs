@@ -11,6 +11,8 @@ public class MainMenuButtons : MonoBehaviour
     public GameObject menu;
     public GameObject journal;
 
+    public bool journalAvailable = true;
+
     private void Awake()
     {
         journal = GameObject.Find("Journal");
@@ -95,25 +97,28 @@ public class MainMenuButtons : MonoBehaviour
             }
         }
 
-        if (journal != null)
+        if (journalAvailable)
         {
-            if (Input.GetButtonDown("Journal"))
+            if (journal != null)
             {
-                if (journal.activeSelf)
+                if (Input.GetButtonDown("Journal"))
                 {
-                    journal.SetActive(false);
-                    Debug.Log("Journal Closed");
-                }
-                else
-                {
-                    journal.SetActive(true);
-                    Debug.Log("Journal Open");
+                    if (journal.activeSelf)
+                    {
+                        journal.SetActive(false);
+                        Debug.Log("Journal Closed");
+                    }
+                    else
+                    {
+                        journal.SetActive(true);
+                        Debug.Log("Journal Open");
+                    }
                 }
             }
-        }
-        else
-        {
-            Debug.LogError("No Journal Assigned");
+            else
+            {
+                Debug.LogError("No Journal Assigned - Is this a scene where journal is not usable?");
+            }
         }
     }
 }
