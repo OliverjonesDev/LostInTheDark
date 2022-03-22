@@ -11,6 +11,7 @@ public class Interactable : MonoBehaviour
     public bool collectable;
     public bool interactable;
     public bool moveable = true;
+    public bool torch = false;
     public LayerMask playerLayerMask;
     public enum InteractableType
     {
@@ -20,6 +21,8 @@ public class Interactable : MonoBehaviour
     public InteractableType typeOfInteractable;
     [Header("||")]
     public bool moving;
+    public bool moveOnce = false;
+    public Transform newPos;
     public float animationSpeed = 2f;
     public float amplitude = .2f;
     private Vector2 transformOrg;
@@ -59,9 +62,18 @@ public class Interactable : MonoBehaviour
             {
                 parentOfPlayer.GetComponent<PlayerInteractions>().playerInventory.Add(gameObject);
                 collectable = false;
+                if (torch)
+                {
+                    parentOfPlayer.GetComponent<PlayerController>().playerHasTorch = true;
+                    Debug.Log("Torch collected");
+                    gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.Log("Item collected" + gameObject.name);
+                    gameObject.SetActive(false);
+                }
 
-                Debug.Log("Item collected" + gameObject.name);
-                gameObject.SetActive(false);
             }
             if (interactable)
             {
@@ -116,8 +128,15 @@ public class Interactable : MonoBehaviour
         {
             if (moving)
             {
-                transform.position = new Vector2(transform.position.x, transformOrg.y + (Mathf.Sin(input * animationSpeed) * amplitude));
-                input += Time.deltaTime;
+                if (moveOnce)
+                {
+                    transform.position = Vector2.Lerp(transform.position, newPos.position, animationSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.position = new Vector2(transform.position.x, transformOrg.y + (Mathf.Sin(input * animationSpeed) * amplitude));
+                    input += Time.deltaTime;
+                }
             }
         }
         if (interactableFixed == true && affectedPartner != null)
@@ -177,7 +196,7 @@ public class Interactable : MonoBehaviour
                             interactableFixed = true;
                             requiredItemsToFix.Remove(requiredItemsToFix[i]);
                             playerInteractionsScript.playerInventory.Remove(playerInteractionsScript.playerInventory[i]);
-                            gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+                            //gameObject.GetComponent<SpriteRenderer>().color = Color.black;
                             interactionLight.enabled = false;
                         }
                     }

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public bool controllingShadow = false;
     public bool playerHasTorch = false;
     public bool isPlayerTorchActive;
+    public torchController torchController;
     public GameObject TorchBatteryUI;
     public GameObject playerTorch;
 
@@ -29,6 +30,9 @@ public class PlayerController : MonoBehaviour
                     controllingPlayer = false;
                     Debug.Log("Switched");
                     controllingShadow = true;
+                    torchController.torchOn = false;
+                    isPlayerTorchActive = false;
+                    playerTorch.SetActive(false);
                 }
                 else
                 {

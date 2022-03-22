@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 shadowRB2D.velocity = new Vector2(0, shadow.GetComponent<Rigidbody2D>().velocity.y);
             }
-            shadowRB2D.simulated = false;
+           // shadowRB2D.simulated = false;
             playerRB2D.simulated = true;
         }
         else

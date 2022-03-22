@@ -10,6 +10,7 @@ public class ShadowBlockPlayer : MonoBehaviour
     [Header("What light to brighten the shadow")]
     public GameObject isShadowLitUp;
     private PlayerMovement playerMovement;
+    public float lightIntensityShadow = 1;
 
     private void Start()
     {
@@ -51,7 +52,7 @@ public class ShadowBlockPlayer : MonoBehaviour
         }
         if (collision.gameObject.layer == 10)
         {
-            GetComponent<Light2D>().intensity = .3f;
+            GetComponent<Light2D>().intensity = lightIntensityShadow;
         }
     }
 

@@ -44,6 +44,7 @@ public class torchController : MonoBehaviour
                     timer = 0;
                     flickerInterval = Random.Range(flickerTimeMin, flickerTimeMax);
                     torchLight.intensity = Random.Range(torchLightIntensityMin, torchLightIntensityMax);
+                    torchLight.enabled = true;
                 }
                 battery -= Time.deltaTime * batteryDecreaseRatePS;
             }

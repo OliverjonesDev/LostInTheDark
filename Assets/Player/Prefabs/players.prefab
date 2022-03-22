@@ -125,6 +125,7 @@ MonoBehaviour:
   controllingShadow: 0
   playerHasTorch: 0
   isPlayerTorchActive: 0
+  torchController: {fileID: 6090809869636352907}
   TorchBatteryUI: {fileID: 0}
   playerTorch: {fileID: 5092534125739664329}
 --- !u!114 &4021299489063642702
@@ -555,7 +556,7 @@ MonoBehaviour:
   torchLightIntensityMin: 1
   torchLightIntensityMax: 5
   battery: 100
-  batteryDecreaseRatePS: 25
+  batteryDecreaseRatePS: 10
   batteryIncreaseRatePS: 10
   batteryIndicators:
   - {fileID: 0}
