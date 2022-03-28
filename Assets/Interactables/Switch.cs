@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Switch : Interactable
 {
@@ -12,6 +13,7 @@ public class Switch : Interactable
 
     public bool isApartOfSequence;
     public SequencePuzzle sequence;
+    public List<Light2D> enabled;
     public bool canInteract =true;
     public override void OnInteract(int curController)
     {
@@ -22,6 +24,10 @@ public class Switch : Interactable
             {
                 switchOn = false;
                 spriteRenderer.sprite = offSprite;
+                for (int i = 0; i < enabled.Count; i++)
+                {
+                    enabled[i].enabled = false;
+                }
                 if (isApartOfSequence)
                 {
                     sequence.currentSequence.Remove(gameObject);
@@ -31,6 +37,10 @@ public class Switch : Interactable
             {
                 switchOn = true;
                 spriteRenderer.sprite = onSprite;
+                for (int i = 0; i < enabled.Count; i++)
+                {
+                    enabled[i].enabled = true;
+                }
                 if (isApartOfSequence)
                 {
                     sequence.currentSequence.Add(gameObject);

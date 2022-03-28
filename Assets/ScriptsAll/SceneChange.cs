@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SceneChange : MonoBehaviour
 {
-    private int totalCharactersInTrigger;
+    public int totalCharactersInTrigger;
     public GameObject moveToNextSceneButton;
    private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,6 +14,7 @@ public class SceneChange : MonoBehaviour
             if (totalCharactersInTrigger == 2)
             {
                 moveToNextSceneButton.SetActive(true);
+                Debug.Log("Next level");
             }
         }
     }

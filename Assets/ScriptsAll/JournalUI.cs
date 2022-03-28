@@ -9,9 +9,8 @@ public class JournalUI : MonoBehaviour
     [SerializeField]
     private int currentPage = 0;
     private Image journalPage;
-    public Sprite[] journalPages;
+    public List<Sprite> journalPages;
     [Header("Make these list elements you wish to lock")]
-    public List<int> lockedPages;
 
     private AudioSource audioSource;
 
@@ -33,9 +32,9 @@ public class JournalUI : MonoBehaviour
 
     public void Forth()
     {
-        if (!lockedPages.Contains(currentPage+1))
+        if (journalPages.Count >= currentPage+1)
         {
-            if (currentPage < journalPages.Length - 1)
+            if (currentPage < journalPages.Count - 1)
             {
                 currentPage++;
                 playSound();

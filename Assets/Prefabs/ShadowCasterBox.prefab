@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3329144018261051057}
   m_Layer: 7
-  m_Name: ShadowCaster-Playerblocker
+  m_Name: ShadowCasterBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

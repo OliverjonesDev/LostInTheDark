@@ -70,23 +70,13 @@ public class PlayerMovement : MonoBehaviour
             }
             Slope();
         }
-        if (curController == shadow)
-        {
-            player.SetActive(false);
-            shadow.SetActive(true);
-        }
-        else
-        {
-            shadow.SetActive(false);
-            player.SetActive(true);
-        }
     }
 
     void ControllingPlayer()
     {
         #region playerInput and player movement directional
 
-        if (Input.GetAxisRaw("Horizontal") < 0)
+        if (Input.GetAxis("Horizontal") < 0)
         {
             lastDirInput = -1;
             if (!GetComponent<PlayerPullBlock>().blockPulling && Input.GetAxisRaw("Horizontal") < 0)
@@ -95,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             }
             walking = true;
         }
-        else if(Input.GetAxisRaw("Horizontal") > 0)
+        else if(Input.GetAxis("Horizontal") > 0)
         {
             lastDirInput = 1;
             if (!GetComponent<PlayerPullBlock>().blockPulling && Input.GetAxisRaw("Horizontal") > 0)
@@ -150,8 +140,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 shadowRB2D.velocity = new Vector2(0, shadow.GetComponent<Rigidbody2D>().velocity.y);
             }
-            //shadowRB2D.simulated = false;
-            playerRB2D.simulated = true;
         }
         else
         {
@@ -161,8 +149,6 @@ public class PlayerMovement : MonoBehaviour
             { 
                 playerRB2D.velocity = new Vector2(0, playerRB2D.velocity.y);
             }
-            shadowRB2D.simulated = true;
-            playerRB2D.simulated = false;
         }
         #endregion
     }

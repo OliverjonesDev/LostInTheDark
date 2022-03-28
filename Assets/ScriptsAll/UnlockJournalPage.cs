@@ -10,7 +10,7 @@ public class UnlockJournalPage : MonoBehaviour
 
     public JournalUI journal;
 
-    public List<int> pagesToUnlock;
+    public Sprite[] pagesToUnlock;
     public SpriteRenderer speechBubble;
 
     private void Awake()
@@ -28,9 +28,9 @@ public class UnlockJournalPage : MonoBehaviour
             {
                 audioSource.Play();
                 played = true;
-                for (int i = 0; i < pagesToUnlock.Count; i++)
+                for (int i = 0; i < pagesToUnlock.Length; i++)
                 {
-                    journal.lockedPages.Remove(pagesToUnlock[i]);
+                    journal.journalPages.Add(pagesToUnlock[i]);
                 }
 
                 StartCoroutine(ShowBubble());

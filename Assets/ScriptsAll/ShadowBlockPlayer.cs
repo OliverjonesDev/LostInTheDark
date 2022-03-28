@@ -5,6 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class ShadowBlockPlayer : MonoBehaviour
 {
+    public bool blockPlayer;
     public bool playerInShadow;
     public GameObject player;
     [Header("What light to brighten the shadow")]
@@ -23,9 +24,35 @@ public class ShadowBlockPlayer : MonoBehaviour
         //This controlls if the light which is meant to light up and unblock the player from walking through is enabled.
         //This is incase there is no light assigned to the variable, this allows the code to still use shadows as walls for the player
 
-        if (isShadowLitUp != null)
+        if (blockPlayer)
         {
-            if (!isShadowLitUp.activeInHierarchy)
+            if (isShadowLitUp != null)
+            {
+                if (!isShadowLitUp.activeInHierarchy)
+                {
+                    if (collision.gameObject.layer == 6)
+                    {
+                        GetComponent<BoxCollider2D>().enabled = true;
+                        player.gameObject.transform.parent.GetComponent<PlayerMovement>().playerInShadow = true;
+                        Debug.Log("Entered");
+                        if (collision.transform.position.x > transform.position.x)
+                        {
+                            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+                            Debug.Log("Left");
+
+                        }
+                        else
+                        {
+                            collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10, 0), ForceMode2D.Impulse);
+                        }
+                    }
+                }
+                else
+                {
+                    GetComponent<BoxCollider2D>().enabled = false;
+                }
+            }
+            else
             {
                 if (collision.gameObject.layer == 6)
                 {
@@ -44,32 +71,14 @@ public class ShadowBlockPlayer : MonoBehaviour
                     }
                 }
             }
-            else
-            {
-                GetComponent<BoxCollider2D>().enabled = false;
-            }
-        }else
-        {
-            if (collision.gameObject.layer == 6)
-            {
-                GetComponent<BoxCollider2D>().enabled = true;
-                player.gameObject.transform.parent.GetComponent<PlayerMovement>().playerInShadow = true;
-                Debug.Log("Entered");
-                if (collision.transform.position.x > transform.position.x)
-                {
-                    collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
-                    Debug.Log("Left");
-
-                }
-                else
-                {
-                    collision.gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10, 0), ForceMode2D.Impulse);
-                }
-            }
         }
         if (collision.gameObject.layer == 10)
         {
             GetComponent<Light2D>().intensity = lightIntensityShadow;
+        }
+        if (collision.gameObject.layer == 6 && !blockPlayer)
+        {
+            GetComponent<Light2D>().intensity = lightIntensityShadow / 4;
         }
     }
 
@@ -79,6 +88,10 @@ public class ShadowBlockPlayer : MonoBehaviour
         if (collision.gameObject.layer == 10)
         {
             GetComponent<Light2D>().intensity = 0f;
+        }
+        if (collision.gameObject.layer == 6)
+        {
+            GetComponent<Light2D>().intensity = 0;
         }
     }
 
