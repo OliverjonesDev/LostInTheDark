@@ -9,10 +9,9 @@ public class Interactable : MonoBehaviour {
     public AudioClip audioClip;
     public SpriteRenderer spriteRenderer;
     public float audioOffset;
-    [SerializeField]
     public GameObject parentOfPlayer;
-    [SerializeField]
     public Light2D interactionLight;
+    public bool breakOnUse;
 
 
     private void Awake()
@@ -34,6 +33,8 @@ public class Interactable : MonoBehaviour {
 
         PlayAudio();
         Debug.Log("This Object was Interacted with" + gameObject.name);
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

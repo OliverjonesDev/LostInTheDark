@@ -5,22 +5,39 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     [Header("Player Animations")]
-    public GameObject player;
-    public SpriteRenderer playerRenderer;
-    public SpriteRenderer speechBubble;
-    public Sprite playerIdleAnim;
-    public Sprite playerWalkAnim;
-    public Sprite playerCrouchAnim;
-    public Sprite playerPushAnim;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private SpriteRenderer playerRenderer;
+    [SerializeField]
+    private SpriteRenderer speechBubble;
+    [SerializeField]
+    private Sprite playerIdleAnim;
+    [SerializeField]
+    private Sprite playerWalkAnim;
+    [SerializeField]
+    private Sprite playerCrouchAnim;
+    [SerializeField]
+    private Sprite playerPushAnim;
     [Header("Shadow Animations")]
-    public GameObject shadow;
-    public SpriteRenderer shadowRenderer;
-    public Sprite shadowIdleAnim;
-    public Sprite shadowWalkAnim;
-    public Sprite shadowCrouchAnim;
-
-    public PlayerMovement referenceToPlayerMovement;
-    public PlayerPullBlock referenceToPlayerPullBlock;
+    [SerializeField]
+    private GameObject shadow;
+    [SerializeField]
+    private SpriteRenderer shadowRenderer;
+    [SerializeField]
+    private Sprite shadowIdleAnim;
+    [SerializeField]
+    private Sprite shadowWalkAnim;
+    [SerializeField]
+    private Sprite shadowCrouchAnim;
+    [SerializeField]
+    private GameObject playerWalkTorchSprites;
+    [SerializeField]
+    private PlayerMovement referenceToPlayerMovement;
+    [SerializeField]
+    private PlayerPullBlock referenceToPlayerPullBlock;
+    [SerializeField]
+    private PlayerController referenceToPlayerController;
 
 
     private void Start()
@@ -31,6 +48,7 @@ public class PlayerAnimationController : MonoBehaviour
         shadowRenderer = shadow.GetComponent<SpriteRenderer>();
         referenceToPlayerMovement = GetComponent<PlayerMovement>();
         referenceToPlayerPullBlock = GetComponent<PlayerPullBlock>();
+        referenceToPlayerController = GetComponent<PlayerController>();
         speechBubble = GameObject.Find("SpeechBubble").GetComponent<SpriteRenderer>();
         speechBubble.enabled = false;
     }
@@ -47,24 +65,40 @@ public class PlayerAnimationController : MonoBehaviour
             if (referenceToPlayerMovement.walking && !referenceToPlayerMovement.crouching && !referenceToPlayerPullBlock.blockPulling)
             {
                 playerRenderer.sprite = playerWalkAnim;
+                if (referenceToPlayerController.playerHasTorch == true)
+                {
+                    playerWalkTorchSprites.SetActive(true);
+                }
+                else
+                {
+                    playerWalkTorchSprites.SetActive(false);
+                }
             }
             else if (referenceToPlayerMovement.crouching)
             {
                 playerRenderer.sprite = playerCrouchAnim;
+                if (referenceToPlayerController.playerHasTorch == true)
+                {
+                    playerWalkTorchSprites.SetActive(true);
+                }
+                else
+                {
+                    playerWalkTorchSprites.SetActive(false);
+                }
             }
             else if (referenceToPlayerPullBlock.blockPulling)
             {
                 playerRenderer.sprite = playerPushAnim;
-            }
-            else
-            {
-                playerRenderer.sprite = playerIdleAnim;
+                if (referenceToPlayerController.playerHasTorch == true)
+                {
+                    playerWalkTorchSprites.SetActive(false);
+                }
             }
         }
     }
     void ShadowAnimations()
     {
-        if (GetComponent<PlayerMovement>().curController == shadow)
+        if (referenceToPlayerMovement.curController == shadow)
         {
             if (referenceToPlayerMovement.walking && !referenceToPlayerMovement.crouching)
             {

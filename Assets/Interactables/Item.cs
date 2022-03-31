@@ -5,12 +5,18 @@ using UnityEngine;
 public class Item : Interactable
 {
     public GameObject torch;
+    public PlayerInteractions playerInteractions;
+
+    private void Start()
+    {
+        playerInteractions = parentOfPlayer.GetComponent<PlayerInteractions>();
+    }
     public override void OnInteract(int curController)
     {
-        parentOfPlayer.GetComponent<PlayerInteractions>().playerInventory.Add(gameObject);
+        playerInteractions.playerInventory.Add(gameObject);
         if (torch)
         {
-            parentOfPlayer.GetComponent<PlayerController>().playerHasTorch = true;
+            playerInteractions.GetComponent<PlayerController>().playerHasTorch = true;
             Debug.Log("Torch collected");
             gameObject.SetActive(false);
         }

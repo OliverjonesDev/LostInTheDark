@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class SequencePuzzle : MonoBehaviour
 {
-    public GameObject[] correctSequence;
-    public List<GameObject> allSwitchsInSequence;
+    [SerializeField]
+    private GameObject[] correctSequence;
+    [SerializeField]
+    private List<GameObject> allSwitchsInSequence;
     public List<GameObject> currentSequence;
-    public List<GameObject> objectives;
+    [SerializeField]
+    private List<GameObject> objectives;
+    [SerializeField]
+    private bool sequenceCompleted = false;
 
-    public bool sequenceCompleted = false;
+    public LightSequence lightSequenceLinked;
 
     private void Awake()
     {
@@ -72,6 +77,10 @@ public class SequencePuzzle : MonoBehaviour
         for (var i = 0; i < objectives.Count; i++)
         {
             objectives[i].SetActive(true);
+        }
+        if (lightSequenceLinked != null)
+        {
+            lightSequenceLinked.puzzleStart = true;
         }
     }
 }

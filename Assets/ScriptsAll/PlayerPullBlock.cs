@@ -35,7 +35,7 @@ public class PlayerPullBlock : MonoBehaviour
         {
             blockDetected = false;
         }
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Interact"))
         {
             interact = true;
         }

@@ -5,36 +5,46 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightSequence : MonoBehaviour
 {
-    public GameObject[] lightsInSequence;
-    public float timerLeway = 2f;
-    public float[] timingsInSequence;
-    public float sequenceTimer;
+    [SerializeField]
+    private GameObject[] lightsInSequence;
+    [SerializeField]
+    private float timerLeway = 2f;
+    [SerializeField]
+    private float[] timingsInSequence;
+    [SerializeField]
+    private float sequenceTimer;
+
+    public bool puzzleStart = false;
 
     private void Update()
     {
-        sequenceTimer += Time.deltaTime;
-        for (int i = 0; i < lightsInSequence.Length; i++)
+        if (puzzleStart)
         {
-            if (sequenceTimer > timingsInSequence[i])
+            sequenceTimer += Time.deltaTime;
+            for (int i = 0; i < lightsInSequence.Length; i++)
             {
-                lightsInSequence[i].GetComponent<Light2D>().enabled = false;
-                lightsInSequence[i].GetComponent<LightingPlayerDetect>().enabled = false;
-            }
-            if (i == lightsInSequence.Length - 1)
-            {
-                if (sequenceTimer > timingsInSequence[i] + timerLeway)
+                if (sequenceTimer > timingsInSequence[i])
                 {
-                    sequenceTimer = 0;
-                    for (int j = 0; j < lightsInSequence.Length; j++)
-                    {
-                        lightsInSequence[j].GetComponent<Light2D>().enabled = true;
-                        lightsInSequence[j].GetComponent<LightingPlayerDetect>().enabled = true;
-                    }
-
+                    lightsInSequence[i].GetComponent<Light2D>().enabled = false;
+                    lightsInSequence[i].GetComponent<LightingPlayerDetect>().enabled = false;
                 }
-            }
+                if (i == lightsInSequence.Length - 1)
+                {
+                    if (sequenceTimer > timingsInSequence[i] + timerLeway)
+                    {
+                        sequenceTimer = 0;
+                        for (int j = 0; j < lightsInSequence.Length; j++)
+                        {
+                            lightsInSequence[j].GetComponent<Light2D>().enabled = true;
+                            lightsInSequence[j].GetComponent<LightingPlayerDetect>().enabled = true;
+                        }
 
+                    }
+                }
+
+            }
         }
+       
 
     }
 }

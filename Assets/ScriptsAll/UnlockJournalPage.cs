@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class UnlockJournalPage : MonoBehaviour
 {
-
-    AudioSource audioSource;
-    bool played;
-
-    public JournalUI journal;
-
-    public Sprite[] pagesToUnlock;
-    public SpriteRenderer speechBubble;
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private bool played;
+    [SerializeField]
+    private JournalUI journal;
+    [SerializeField]
+    private Sprite[] pagesToUnlock;
+    [SerializeField]
+    private SpriteRenderer speechBubble;
+    [SerializeField]
+    private GameObject showHelpText;
 
     private void Awake()
     {
@@ -19,6 +23,10 @@ public class UnlockJournalPage : MonoBehaviour
         journal = GameObject.Find("Journal").GetComponent<JournalUI>();
         speechBubble = GameObject.Find("SpeechBubble").GetComponent<SpriteRenderer>();
         speechBubble.enabled = false;
+        if (showHelpText != null)
+        {
+            showHelpText.SetActive(false);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -34,6 +42,10 @@ public class UnlockJournalPage : MonoBehaviour
                 }
 
                 StartCoroutine(ShowBubble());
+                if (showHelpText != null)
+                {
+                    StartCoroutine(ShowHelpText());
+                }
             }
         }
     }
@@ -43,6 +55,13 @@ public class UnlockJournalPage : MonoBehaviour
         speechBubble.enabled = true;
         yield return new WaitForSeconds(2.5f);
         speechBubble.enabled = false;
+    }
+
+    IEnumerator ShowHelpText()
+    {
+        showHelpText.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        showHelpText.SetActive(false);
     }
 
 }

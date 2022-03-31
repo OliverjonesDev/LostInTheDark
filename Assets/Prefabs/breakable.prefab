@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8480555955780147614}
   - component: {fileID: 8480555955780147586}
   - component: {fileID: 8480555955780147587}
+  - component: {fileID: 697474209812047744}
   m_Layer: 0
   m_Name: breakable
   m_TagString: Untagged
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8480555955780147615}
   m_LocalRotation: {x: -0, y: -0, z: 0.019118939, w: 0.99981725}
   m_LocalPosition: {x: -28.03, y: -10.58, z: 2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.0504, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -52,15 +53,18 @@ MonoBehaviour:
   audioOffset: 0.2
   parentOfPlayer: {fileID: 0}
   interactionLight: {fileID: 0}
+  breakOnUse: 1
   onSprite: {fileID: 21300000, guid: 45eb06331e2d6674e8db0c2945cdecaf, type: 3}
   offSprite: {fileID: 21300000, guid: 8fba3533f2f690746a54e3a2c8869966, type: 3}
   switchOn: 0
   isApartOfSequence: 0
   sequence: {fileID: 0}
+  enabled: []
   canInteract: 1
   hasCollision: 1
-  collision: {fileID: 8480555955780147587}
   volume: 0.05
+  collision: {fileID: 8480555955780147587}
+  triggerVolume: {fileID: 8480555955780147586}
 --- !u!212 &8480555955780147614
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -98,11 +102,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1208575923
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 45eb06331e2d6674e8db0c2945cdecaf, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -164,3 +168,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.77742374, y: 5}
   m_EdgeRadius: 0
+--- !u!114 &697474209812047744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8480555955780147615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: af59208a1918d02a937149ce000000005fa5ed9b
+  m_ShapePath:
+  - {x: 0.10206589, y: 0.98930466, z: 0}
+  - {x: 0.21035324, y: 0.6804476, z: 0}
+  - {x: 0.3518625, y: 0.022069102, z: 0}
+  - {x: 0.17281738, y: -1.3385412, z: 0}
+  - {x: 0.1970122, y: -1.8993418, z: 0}
+  - {x: 0.3051042, y: -2.3043005, z: 0}
+  - {x: 0.59261006, y: -2.3132932, z: 0}
+  - {x: 0.5965868, y: -1.8026855, z: 0}
+  - {x: 0.5035731, y: -0.5266138, z: 0}
+  - {x: 0.58532315, y: 2.425681, z: 0}
+  - {x: 0.32265362, y: 2.398379, z: 0}
+  - {x: 0.2629945, y: 1.990352, z: 0}
+  m_ShapePathHash: -1461568798
+  m_Mesh: {fileID: 0}
+  m_InstanceId: -56332

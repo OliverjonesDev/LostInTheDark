@@ -9,10 +9,10 @@ public class torchController : MonoBehaviour
     public Light2D torchLight;
     public bool torchOn;
     public bool torchLastEmpty;
-    public float flickerInterval, flickerTimeMin, flickerTimeMax, torchLightIntensityMin, torchLightIntensityMax;
+    [SerializeField]
+    private float flickerInterval, flickerTimeMin, flickerTimeMax, torchLightIntensityMin, torchLightIntensityMax;
     public float battery = 100, batteryDecreaseRatePS, batteryIncreaseRatePS;
     private float timer = 0;
-    public Image[] batteryIndicators;
     void Update()
     {
         timer += Time.deltaTime;
@@ -63,7 +63,6 @@ public class torchController : MonoBehaviour
                 }
             }
         }
-        BatteryIndicator();
 
 
 
@@ -92,6 +91,7 @@ public class torchController : MonoBehaviour
     }
     */
 
+    /*
     private void BatteryIndicator()
     {
         //This gets the length of the battery indicator array
@@ -105,6 +105,7 @@ public class torchController : MonoBehaviour
         }
 
     }
+    */
 
     //writing map function from p5js in unity - can use to calculate the opacity of the batteries
     //maps a set of values to different values e.g. 50 - 100 to 0, 1;

@@ -43,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("States - Player")]
     public bool playerInShadow;
 
+    [SerializeField]
+    private PlayerPullBlock playerPullBlock;
+
     public void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -53,6 +56,7 @@ public class PlayerMovement : MonoBehaviour
         curController = player;
         playerOrgColBoundsY = player.GetComponent<BoxCollider2D>().size.y;
         shadowOrgColBoundsY = shadow.GetComponent<BoxCollider2D>().size.y;
+        playerPullBlock = GetComponent<PlayerPullBlock>();
     }
 
     private void Update()
@@ -79,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetAxis("Horizontal") < 0)
         {
             lastDirInput = -1;
-            if (!GetComponent<PlayerPullBlock>().blockPulling && Input.GetAxisRaw("Horizontal") < 0)
+            if (!playerPullBlock.blockPulling && Input.GetAxisRaw("Horizontal") < 0)
             {
                 curController.transform.localScale = new Vector3(-Mathf.Abs(curController.transform.localScale.x), curController.transform.localScale.y, curController.transform.localScale.z);
             }
@@ -88,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         else if(Input.GetAxis("Horizontal") > 0)
         {
             lastDirInput = 1;
-            if (!GetComponent<PlayerPullBlock>().blockPulling && Input.GetAxisRaw("Horizontal") > 0)
+            if (!playerPullBlock.blockPulling && Input.GetAxisRaw("Horizontal") > 0)
             {
                 curController.transform.localScale = new Vector3(Mathf.Abs(curController.transform.localScale.x), curController.transform.localScale.y, curController.transform.localScale.z);
             }
@@ -100,18 +104,25 @@ public class PlayerMovement : MonoBehaviour
             walking = false;
         }
 
-        if (Input.GetButtonDown("Crouch") && crouchCheck.collider == null && isGrounded)
+        if (Input.GetAxis("Crouch") > 0 && crouchCheck.collider == null && isGrounded)
         {
             if (crouching)
             {
                 crouching = false;
             }
-            else
+        }
+        else if (Input.GetAxis("Crouch") <0 && crouchCheck.collider == null && isGrounded && !isOnLadder)
+        {
+            if (!crouching)
             {
                 crouching = true;
             }
         }
-        if (GetComponent<PlayerPullBlock>().blockPulling || crouching)
+        if (isOnLadder && crouching)
+        {
+            crouching = false;
+        }
+        if (playerPullBlock.blockPulling || crouching)
         {
             movementSpeed = movementSpeedPulling;
         }
@@ -193,7 +204,8 @@ public class PlayerMovement : MonoBehaviour
         #region player jumping
         if (curController == player)
         {
-            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength);
+            Physics2D.queriesHitTriggers = false;
+            jumpCheck1 = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength, layerMask: ~jumpMask);
             Debug.DrawRay(curController.transform.position, Vector2.down * jumpPlayerCheckLength);
             crouchCheck = Physics2D.Raycast(curController.transform.position, Vector2.up, jumpPlayerCheckLength);
             Debug.DrawRay(curController.transform.position, Vector2.up * jumpPlayerCheckLength, Color.red);

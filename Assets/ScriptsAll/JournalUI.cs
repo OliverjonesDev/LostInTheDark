@@ -46,6 +46,17 @@ public class JournalUI : MonoBehaviour
     private void Update()
     {
         journalPage.sprite = journalPages[currentPage];
+        if (Input.GetButtonDown("RotateTorch"))
+        {
+            if (Input.GetAxisRaw("RotateTorch") < 0)
+            {
+                Forth();
+            }
+            else if (Input.GetAxisRaw("RotateTorch") > 0)
+            {
+                Back();
+            }
+        }
     }
 
     private void playSound()

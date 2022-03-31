@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3329144018261051057}
-  m_Layer: 7
+  m_Layer: 14
   m_Name: ShadowCasterBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3329144018261051056}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.69, y: 1.35, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4.5175, y: 4.36, z: 1}
   m_Children:
   - {fileID: 3329144018297245976}
   m_Father: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3329144018297245979}
   - component: {fileID: 3329144018297245978}
   - component: {fileID: 3329144018297245958}
-  m_Layer: 7
+  m_Layer: 14
   m_Name: DarkShadowCasting 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 0
   m_LightVolumeOpacity: 0.266
-  m_ApplyToSortingLayers: af59208a1918d02a937149ce00000000
+  m_ApplyToSortingLayers: 000000004d98f6b75fa5ed9b
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4a7cf802ca2e34439a74896b8d783df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockPlayer: 0
   playerInShadow: 0
   player: {fileID: 0}
   isShadowLitUp: {fileID: 0}

@@ -9,21 +9,40 @@ public class PlayerController : MonoBehaviour
     public bool playerHasTorch = false;
     public bool isPlayerTorchActive;
     public torchController torchController;
-    public GameObject TorchBatteryUI;
-    public GameObject playerTorch;
-
+    //[SerializeField]
+    //private GameObject TorchBatteryUI;
+    [SerializeField]
+    private GameObject playerTorch;
+    [SerializeField]
+    private PlayerMovement playerMovement;
+    [SerializeField]
+    private PlayerPullBlock playerPullBlock;
+    [SerializeField]
+    private PlayerInteractions playerInteractions;
     void Start()
     {
         controllingPlayer = true;
         playerTorch = GameObject.Find("TorchLight");
+        playerPullBlock =GetComponent<PlayerPullBlock>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerInteractions = GetComponent<PlayerInteractions>();
+        torchController = playerTorch.transform.parent.GetComponent<torchController>();
     }
 
     void Update()
     {
 
-        if (!GetComponent<PlayerMovement>().isInLight && GetComponent<PlayerMovement>().jumpCheck1.collider != null && GetComponent<PlayerPullBlock>().blockPulling == false && !GetComponent<PlayerMovement>().crouching)
+        if (!playerMovement.isInLight && playerMovement.jumpCheck1.collider != null && playerPullBlock.blockPulling == false && !playerMovement.crouching)
         {
-            if (Input.GetButtonDown("Shadow Switch"))
+            if (Input.GetAxis("Shadow Switch") < 0)
+            {
+                {
+                    controllingPlayer = true;
+                    controllingShadow = false;
+
+                }
+            }
+            else if (Input.GetAxis("Shadow Switch") > 0)
             {
                 if (controllingPlayer == true)
                 {
@@ -34,48 +53,46 @@ public class PlayerController : MonoBehaviour
                     isPlayerTorchActive = false;
                     playerTorch.SetActive(false);
                 }
-                else
-                {
-                    controllingPlayer = true;
-                    controllingShadow = false;
-
-                }
             }
         }
         if (controllingPlayer == true)
         {
-
-            if (playerTorch != null)
+            if (playerInteractions.playerPossibleInterations.Count == 0)
             {
-                TorchBatteryUI.SetActive(true);
-                isPlayerTorchActive = playerTorch.activeInHierarchy;
-                if (Input.GetButton("Fire1") && playerTorch.transform.parent.GetComponent<torchController>().battery > 0 && !playerTorch.transform.parent.GetComponent<torchController>().torchLastEmpty)
+                if (playerTorch != null)
                 {
-                    if (!isPlayerTorchActive)
+                    //TorchBatteryUI.SetActive(true);
+                    isPlayerTorchActive = playerTorch.activeInHierarchy;
+                    if (Input.GetButtonDown("Interact") && torchController.battery > 0 && !torchController.torchLastEmpty)
                     {
-                        playerTorch.SetActive(true);
-                        playerTorch.transform.parent.GetComponent<torchController>().torchOn = true;
+                        if (!isPlayerTorchActive)
+                        {
+                            playerTorch.SetActive(true);
+                            torchController.torchOn = true;
+                        }
+                        if (isPlayerTorchActive)
+                        {
+                            playerTorch.SetActive(false);
+                            torchController.torchOn = false;
+                            //TorchBatteryUI.SetActive(false);
+                        }
                     }
                 }
-                else
-                {
-                    playerTorch.SetActive(false);
-                    playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
-                    TorchBatteryUI.SetActive(false);
-                }
             }
-
         }
         if (!playerHasTorch)
         {
             playerTorch.SetActive(false);
-            playerTorch.transform.parent.GetComponent<torchController>().torchOn = false;
-            TorchBatteryUI.SetActive(false);
-
+            torchController.torchOn = false;
+            //TorchBatteryUI.SetActive(false);
         }
         else
         {
-            TorchBatteryUI.SetActive(true);
+            //TorchBatteryUI.SetActive(true);
+        }
+        if (playerPullBlock.blockPulling)
+        {
+            torchController.torchOn = false;
         }
     }
 
