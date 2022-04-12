@@ -35,7 +35,7 @@ public class PlayerPullBlock : MonoBehaviour
         {
             blockDetected = false;
         }
-        if (Input.GetButton("Interact"))
+        if (Input.GetButton("Interact") && GetComponent<PlayerMovement>().isGrounded)
         {
             interact = true;
         }

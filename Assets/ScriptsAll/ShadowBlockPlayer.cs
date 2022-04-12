@@ -97,13 +97,16 @@ public class ShadowBlockPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (playerMovement.playerInShadow == true)
+        if (blockPlayer)
         {
-            StartCoroutine(MovePlayerBackFromShadow());
-        }
-        else
-        {
-            return;
+            if (playerMovement.playerInShadow == true)
+            {
+                StartCoroutine(MovePlayerBackFromShadow());
+            }
+            else
+            {
+                return;
+            }
         }
     }
 

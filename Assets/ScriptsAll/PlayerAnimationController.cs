@@ -12,24 +12,14 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer speechBubble;
     [SerializeField]
-    private Sprite playerIdleAnim;
-    [SerializeField]
-    private Sprite playerWalkAnim;
-    [SerializeField]
-    private Sprite playerCrouchAnim;
-    [SerializeField]
-    private Sprite playerPushAnim;
+    private Sprite playerIdleAnim, playerWalkAnim , playerCrouchAnim, playerPushAnim;
     [Header("Shadow Animations")]
     [SerializeField]
     private GameObject shadow;
     [SerializeField]
     private SpriteRenderer shadowRenderer;
     [SerializeField]
-    private Sprite shadowIdleAnim;
-    [SerializeField]
-    private Sprite shadowWalkAnim;
-    [SerializeField]
-    private Sprite shadowCrouchAnim;
+    private Sprite shadowIdleAnim , shadowWalkAnim, shadowCrouchAnim;
     [SerializeField]
     private GameObject playerWalkTorchSprites;
     [SerializeField]
@@ -93,6 +83,10 @@ public class PlayerAnimationController : MonoBehaviour
                 {
                     playerWalkTorchSprites.SetActive(false);
                 }
+            }
+            else
+            {
+                playerRenderer.sprite = playerWalkAnim;
             }
         }
     }

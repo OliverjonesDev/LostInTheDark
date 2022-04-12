@@ -32,28 +32,21 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        if (!playerMovement.isInLight && playerMovement.jumpCheck1.collider != null && playerPullBlock.blockPulling == false && !playerMovement.crouching)
+        if (Input.GetAxis("Shadow Switch") > 0)
         {
-            if (Input.GetAxis("Shadow Switch") < 0)
             {
-                {
-                    controllingPlayer = true;
-                    controllingShadow = false;
-
-                }
+                Debug.Log("Switch to player");
+                controllingPlayer = true;
+                controllingShadow = false;
             }
-            else if (Input.GetAxis("Shadow Switch") > 0)
-            {
-                if (controllingPlayer == true)
-                {
-                    controllingPlayer = false;
-                    Debug.Log("Switched");
-                    controllingShadow = true;
-                    torchController.torchOn = false;
-                    isPlayerTorchActive = false;
-                    playerTorch.SetActive(false);
-                }
-            }
+        }
+        else if (Input.GetAxis("Shadow Switch") < 0)
+        {
+            controllingPlayer = false;
+            controllingShadow = true;
+            torchController.torchOn = false;
+            isPlayerTorchActive = false;
+            playerTorch.SetActive(false);
         }
         if (controllingPlayer == true)
         {
@@ -90,9 +83,11 @@ public class PlayerController : MonoBehaviour
         {
             //TorchBatteryUI.SetActive(true);
         }
-        if (playerPullBlock.blockPulling)
+        if (playerPullBlock.blockDetected || playerPullBlock.blockBeingPulled)
         {
             torchController.torchOn = false;
+            isPlayerTorchActive = false;
+            playerTorch.SetActive(false);
         }
     }
 
