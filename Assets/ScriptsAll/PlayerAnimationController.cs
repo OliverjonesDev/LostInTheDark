@@ -12,7 +12,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer speechBubble;
     [SerializeField]
-    private Sprite playerIdleAnim, playerWalkAnim , playerCrouchAnim, playerPushAnim;
+    private Sprite playerIdleAnim, playerWalkAnim , playerCrouchAnim, playerPushAnim, playerOnLadder;
     [Header("Shadow Animations")]
     [SerializeField]
     private GameObject shadow;
@@ -83,6 +83,10 @@ public class PlayerAnimationController : MonoBehaviour
                 {
                     playerWalkTorchSprites.SetActive(false);
                 }
+            }
+            else if (referenceToPlayerMovement.isOnLadder)
+            {
+                playerRenderer.sprite = playerOnLadder;
             }
             else
             {

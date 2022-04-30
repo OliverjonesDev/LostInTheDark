@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerController playerController;
     private float playerOrgColBoundsY, shadowOrgColBoundsY;
     public GameObject player, shadow, curController;
-    private Rigidbody2D curConRB2D;
+    private Rigidbody2D curConRB2D, shadowRB2D, playerRB2D;
     [Header("Player Variables")]
     [SerializeField]
     [Range(0, 10)]
@@ -30,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
     private float jumpHeight = 4.5f;
     [SerializeField]
     private float jumpPlayerCheckLength = 1.35f;
+    [SerializeField]
+    private float jumpShadowCheckLength = 2;
     [Header("Slope Variables")]
     [SerializeField]
     private float maxSlope = 30;
@@ -40,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask jumpMask;
     //These are being accessed by other scripts
-    [HideInInspector]
     public bool crouching, walking, jumping, isGrounded, isOnLadder;
     public float lastDirInput;
     [HideInInspector]
@@ -63,6 +64,8 @@ public class PlayerMovement : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         player = GameObject.Find("player");
         shadow = GameObject.Find("shadow");
+        playerRB2D = player.GetComponent<Rigidbody2D>();
+        shadowRB2D = shadow.GetComponent<Rigidbody2D>();
         curController = player;
         curConRB2D = curController.GetComponent<Rigidbody2D>();
         playerOrgColBoundsY = player.GetComponent<BoxCollider2D>().size.y;
@@ -143,10 +146,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerController.controllingPlayer)
         {
+            shadowRB2D.velocity = new Vector2(0, shadowRB2D.velocity.y);
             curController = player;
         }
         else
         {
+            playerRB2D.velocity = new Vector2(0, playerRB2D.velocity.y);
             curController = shadow;
         }
         return;
@@ -195,29 +200,44 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Crouching()
     {
-        if (crouching)
+        if (!isOnLadder)
         {
-            curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.42f);
-            curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY / 2);
+            if (crouching)
+            {
+                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.42f);
+                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY / 2);
+            }
+            else
+            {
+                if (curController == shadow)
+                {
+                    curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.19f);
+                    curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY);
+                }
+                else if (curController == player)
+                {
+                    curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.01f);
+                    curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, playerOrgColBoundsY);
+                }
+            }
         }
         else
         {
-            if (curController == shadow)
-            {
-                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.19f);
-                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, shadowOrgColBoundsY);
-            }
-            else if (curController == player)
-            {
-                curController.GetComponent<BoxCollider2D>().offset = new Vector2(curController.GetComponent<BoxCollider2D>().offset.x, -0.01f);
-                curController.GetComponent<BoxCollider2D>().size = new Vector2(curController.GetComponent<BoxCollider2D>().size.x, playerOrgColBoundsY);
-            }
+            crouching = false;
         }
+
     }
     private void StateChecks()
     {
         Physics2D.queriesHitTriggers = false;
-        jumpCheck = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength, layerMask: ~jumpMask);
+        if (curController == shadow)
+        {
+            jumpCheck = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpShadowCheckLength, layerMask: ~jumpMask);
+        }
+        else
+        {
+            jumpCheck = Physics2D.Raycast(curController.transform.position, Vector2.down, jumpPlayerCheckLength, layerMask: ~jumpMask);
+        }
         isGrounded = jumpCheck.transform;
         Debug.DrawRay(curController.transform.position, Vector2.down * jumpPlayerCheckLength);
         crouchCheck = Physics2D.Raycast(curController.transform.position, Vector2.up, jumpPlayerCheckLength);
